@@ -55,6 +55,10 @@ ai-visibility-scanner/
 └── README.md
 ```
 
+## Conversion tracking (leedly.com embed)
+
+After a successful scan or report unlock, `doFetch()` posts `{ source: 'leedly-scanner', event: 'scan_completed' | 'scan_lead' }` to the parent window, restricted to `https://leedly.com`. No personal data goes in the message. Cloudflare Zaraz on leedly.com turns these into GA4 `scan_complete` / `generate_lead` and Meta `ScanComplete` / `Lead`. Keep that line if the app is regenerated from Claude Design, and keep `index.html` and `public/index.html` identical (Pages deploys `public/`).
+
 ## Deploying an update
 1. Run `supabase/migrations/20260704_rate_limits_and_cache.sql`, then
    `supabase/migrations/20260706_enable_rls.sql`, in the Supabase SQL editor.
