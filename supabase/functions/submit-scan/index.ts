@@ -21,9 +21,9 @@ const CORS_HEADERS = {
 
 const CACHE_TTL_DAYS = 7;
 const RATE_LIMITS = {
-  ip_per_hour: 5,
-  ip_per_day: 20,
-  domain_per_day: 3,
+  ip_per_hour: 15,
+  ip_per_day: 60,
+  domain_per_day: 6,
 };
 
 const AI_CRAWLERS = ["GPTBot", "ClaudeBot", "PerplexityBot", "Google-Extended"];

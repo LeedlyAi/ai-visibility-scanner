@@ -36,7 +36,7 @@ haven't scanned.
 ## Cost controls
 - **LLM Mentions is ~$0.10/call** (SERP + backlinks together are under $0.005).
 - `scan_cache` reuses API findings per domain for 7 days — repeat scans are free.
-- `rate_limits` caps scans at 5/hour and 20/day per IP, 3/day per domain.
+- `rate_limits` caps scans at 15/hour and 60/day per IP, 6/day per domain.
 - Every API call is logged in `api_usage_logs` with estimated cost.
 
 ## Repo Structure
