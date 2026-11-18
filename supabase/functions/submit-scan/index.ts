@@ -115,7 +115,13 @@ Deno.serve(async (req) => {
     
 
     // --- Rate limiting (fail open: a rate-limit outage must not kill scans) ---
+    // Team IPs (comma-separated TEAM_ALLOWLIST_IPS secret) skip the limiter so
+    // internal testing/demos don't lock people out.
+    const teamIps = (Deno.env.get("TEAM_ALLOWLIST_IPS") || "")
+      .split(",").map((x) => x.trim()).filter(Boolean);
+    const skipRateLimit = teamIps.includes(clientIp);
     try {
+      if (skipRateLimit) throw new Error("allowlisted IP, limiter skipped");
       const hourAgo = new Date(Date.now() - 3600_000).toISOString();
       const dayAgo = new Date(Date.now() - 86400_000).toISOString();
       const [ipHour, ipDay, domDay] = await Promise.all([
