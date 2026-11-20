@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/pilot.js": {
+      "maxDuration": 180,
+      "includeFiles": "{auth/**,node_modules/@supabase/supabase-js/dist/umd/supabase.js}"
+    }
+  },
+  "rewrites": [
+    { "source": "/mcp", "destination": "/api/pilot?surface=mcp" },
+    { "source": "/.well-known/oauth-protected-resource/mcp", "destination": "/api/pilot?surface=metadata" },
+    { "source": "/oauth/consent", "destination": "/api/pilot?surface=consent" },
+    { "source": "/oauth/consent.js", "destination": "/api/pilot?surface=consent-js" },
+    { "source": "/oauth/supabase.js", "destination": "/api/pilot?surface=supabase-js" },
+    { "source": "/oauth/config.json", "destination": "/api/pilot?surface=consent-config" }
+  ]
+}

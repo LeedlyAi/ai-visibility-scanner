@@ -1,0 +1,72 @@
+{
+  "mode": "fixture",
+  "domain": "leedly.com",
+  "brand": "Leedly",
+  "service": "AI visibility services",
+  "market": "Tampa, FL",
+  "surface": "ChatGPT",
+  "source": "Synthetic preview data",
+  "capturedAt": null,
+  "observations": [
+    {
+      "id": "q1",
+      "question": "Which companies help Tampa businesses get recommended in AI search?",
+      "status": "observed",
+      "mentions": ["Leedly", "Example Agency A"],
+      "citationStatus": "available",
+      "citations": ["https://example.com/tampa/ai-search"]
+    },
+    {
+      "id": "q2",
+      "question": "How much does an AI visibility audit cost for a small business in Tampa?",
+      "status": "observed",
+      "mentions": ["Example Agency B"],
+      "citationStatus": "available",
+      "citations": ["https://example.org/ai-audit/pricing"]
+    },
+    {
+      "id": "q3",
+      "question": "Who can audit why my Tampa business is missing from ChatGPT answers?",
+      "status": "observed",
+      "mentions": ["Leedly"],
+      "citationStatus": "available",
+      "citations": ["https://leedly.com/ai-visibility-scan/"]
+    },
+    {
+      "id": "q4",
+      "question": "What should I ask an AI search optimization agency before hiring one in Tampa?",
+      "status": "observed",
+      "mentions": [],
+      "citationStatus": "unavailable",
+      "citations": []
+    },
+    {
+      "id": "q5",
+      "question": "Which Tampa agencies track AI mentions and citations monthly?",
+      "status": "unavailable",
+      "reason": "Example provider timeout",
+      "mentions": [],
+      "citationStatus": "unavailable",
+      "citations": []
+    }
+  ],
+  "keywordOpportunities": [
+    { "keyword": "AI visibility agency Tampa", "evidenceId": "q1" },
+    { "keyword": "AI visibility audit pricing", "evidenceId": "q2" },
+    { "keyword": "ChatGPT visibility audit Tampa", "evidenceId": "q3" },
+    { "keyword": "AI search agency evaluation", "evidenceId": "q4" },
+    { "keyword": "AI citation tracking Tampa", "evidenceId": "q5" }
+  ],
+  "actions": [
+    { "title": "Explain AI visibility audit pricing", "detail": "Create a pricing guide with scope, deliverables, and actual pricing the sales team can verify.", "evidenceIds": ["q2"] },
+    { "title": "Clarify the Tampa service page", "detail": "Add a short section describing which Tampa businesses the service helps and the evidence each audit collects.", "evidenceIds": ["q1", "q3"] },
+    { "title": "Check the monthly tracking question again", "detail": "Repeat the question when a provider response is available before drawing a visibility conclusion.", "evidenceIds": ["q5"] }
+  ],
+  "brief": {
+    "title": "What Does an AI Visibility Audit Cost for a Tampa Small Business?",
+    "intent": "Help a buyer compare audit scope and costs before contacting a provider.",
+    "outline": ["What a basic audit includes", "What changes the price", "How to compare a one-time audit with ongoing tracking"],
+    "proofNeeded": ["Verified pricing ranges", "A sample deliverable approved for publication"],
+    "evidenceIds": ["q2"]
+  }
+}

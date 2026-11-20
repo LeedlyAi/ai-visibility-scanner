@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connect Leedly to ChatGPT</title>
+  <style>
+    body { margin: 0; background: #eff4f4; color: #172539; font: 1rem system-ui, sans-serif; }
+    main { max-width: 420px; margin: 10vh auto; padding: 26px; background: white; border-radius: 16px; }
+    h1 { margin-top: 0; font-size: 1.6rem; }
+    label, input { display: block; width: 100%; box-sizing: border-box; }
+    input { margin: 4px 0 14px; padding: 10px; border: 1px solid #66777b; border-radius: 6px; font: inherit; }
+    button { margin-right: 6px; padding: 10px 14px; border: 1px solid #174439; border-radius: 6px; font: inherit; cursor: pointer; }
+    button[type="submit"], #approve { background: #174439; color: white; }
+    @media (max-width: 480px) { main { margin: 24px 12px; } }
+  </style>
+  <script defer src="/oauth/supabase.js"></script>
+  <script type="module" src="/oauth/consent.js"></script>
+</head>
+<body>
+  <main>
+    <h1>Connect Leedly to ChatGPT</h1>
+    <p id="status" role="status">Checking the sign-in request…</p>
+    <form id="sign-in" method="post" hidden>
+      <label>Email <input name="email" type="email" autocomplete="username" required></label>
+      <label>Password <input name="password" type="password" autocomplete="current-password" required></label>
+      <button type="submit">Sign in</button>
+    </form>
+    <div id="consent" hidden>
+      <p>ChatGPT will be able to run visibility scans and retrieve reports from your Leedly account.</p>
+      <button id="approve" type="button">Connect to ChatGPT</button>
+      <button id="deny" type="button">Decline</button>
+    </div>
+  </main>
+</body>
+</html>
