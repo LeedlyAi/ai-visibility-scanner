@@ -21,8 +21,8 @@ const CORS_HEADERS = {
 
 const CACHE_TTL_DAYS = 7;
 const RATE_LIMITS = {
-  ip_per_hour: 500,
-  ip_per_day: 1000,
+  ip_per_hour: 15,
+  ip_per_day: 60,
   domain_per_day: 6,
 };
 
