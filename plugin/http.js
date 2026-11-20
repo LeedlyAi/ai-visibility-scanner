@@ -78,7 +78,7 @@ function createMcp(owner, scans, scope) {
   return server;
 }
 
-export function createHttpServer({ resource, issuer, scope, verify, scans, consent }) {
+export function createHttpHandler({ resource, issuer, scope, verify, scans, consent }) {
   const endpoint = new URL(resource);
   const metadataPath = `/.well-known/oauth-protected-resource${endpoint.pathname}`;
   const metadataUrl = new URL(metadataPath, endpoint).href;
@@ -92,9 +92,9 @@ export function createHttpServer({ resource, issuer, scope, verify, scans, conse
     ["/oauth/supabase.js", ["text/javascript; charset=utf-8", readFileSync(new URL("./node_modules/@supabase/supabase-js/dist/umd/supabase.js", import.meta.url))]],
     ["/oauth/config.json", ["application/json; charset=utf-8", JSON.stringify(consent)]],
   ]);
-  return createServer(async (request, response) => {
+  return async (request, response, { path = request.url, body } = {}) => {
     try {
-      const asset = request.method === "GET" && authFiles?.get(request.url.split("?")[0]);
+      const asset = request.method === "GET" && authFiles?.get(path.split("?")[0]);
       if (asset) {
         response.writeHead(200, {
           "content-type": asset[0],
@@ -105,11 +105,11 @@ export function createHttpServer({ resource, issuer, scope, verify, scans, conse
         }).end(asset[1]);
         return;
       }
-      if (request.url === metadataPath && request.method === "GET") {
+      if (path === metadataPath && request.method === "GET") {
         response.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify(metadata));
         return;
       }
-      if (request.url !== endpoint.pathname) {
+      if (path !== endpoint.pathname) {
         response.writeHead(404).end();
         return;
       }
@@ -125,12 +125,16 @@ export function createHttpServer({ resource, issuer, scope, verify, scans, conse
       const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true });
       response.on("close", () => { void server.close(); });
       await server.connect(transport);
-      await transport.handleRequest(request, response);
+      await transport.handleRequest(request, response, body);
     } catch {
       if (!response.headersSent) response.writeHead(500).end("Plugin request could not be completed.");
       else response.end();
     }
-  });
+  };
+}
+
+export function createHttpServer(options) {
+  return createServer(createHttpHandler(options));
 }
 
 export function verifyWithRemoteKeys(config) {
@@ -139,10 +143,10 @@ export function verifyWithRemoteKeys(config) {
   return createVerifier({ key, issuer, resource, clientId, scope });
 }
 
-export function startLiveServer(config) {
+export function createLiveHandler(config) {
   const store = createStore({ projectUrl: config.projectUrl, secretKey: config.secretKey });
   const observe = createProvider({ login: config.providerLogin, password: config.providerPassword });
-  return createHttpServer({
+  return createHttpHandler({
     ...config,
     consent: {
       projectUrl: config.projectUrl,

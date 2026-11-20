@@ -45,3 +45,9 @@ Configure these environment variables in the private deployment:
 | `PORT` | Runtime listen port, default 4174 |
 
 Run `npm run start:live`. Confirm one account can run a fresh scan and reopen it at 19 remaining. Verify a second account receives no report for that ID. Confirm the provider result and cost in DataForSEO before increasing coverage.
+
+### Vercel pilot host
+
+The dedicated Vercel project uses the `plugin/` directory as its deployment root. `vercel.json` routes MCP and consent requests to the Node function, with the same OAuth checks as the standalone server. Newly created deployments return 503 on pilot routes until the required environment variables are present.
+
+Set `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD`, and `PLUGIN_SUPABASE_SECRET_KEY` as Sensitive variables on that project. Use the API credentials from DataForSEO API Access and a server-side key from the dedicated plugin Supabase project. Keep the provider and Supabase secrets out of client assets, source control, and chat.
