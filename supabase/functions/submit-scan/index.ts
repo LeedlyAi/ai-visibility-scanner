@@ -174,7 +174,11 @@ Deno.serve(async (req) => {
       const cutoff = new Date(Date.now() - CACHE_TTL_DAYS * 86400_000).toISOString();
       const cached = await sbSelect(
         `scan_cache?normalized_domain=eq.${encodeURIComponent(normalized_domain)}&created_at=gte.${cutoff}&select=payload&order=created_at.desc&limit=1`);
-      if (cached?.[0]?.payload) { apiFindings = cached[0].payload; cacheHit = true; }
+      // Ignore cached results where any paid signal failed (e.g. DataForSEO daily cap hit):
+      // an unmeasured signal must be retried, not served from cache for 7 days.
+      const cp = cached?.[0]?.payload;
+      const cacheComplete = cp && cp.serp?.measured === true && cp.backlinks?.measured === true && cp.llm?.measured === true;
+      if (cacheComplete) { apiFindings = cp; cacheHit = true; }
     } catch (e) { console.error("cache read:", (e as Error).message); }
 
     // --- Paid signals (DataForSEO) - only on cache miss ---
@@ -243,7 +247,9 @@ Deno.serve(async (req) => {
       } catch (e) { console.error("LLM mentions:", (e as Error).message); }
 
       try {
-        await sbInsert("scan_cache", { normalized_domain, payload: apiFindings });
+        if (apiFindings.serp?.measured === true && apiFindings.backlinks?.measured === true && apiFindings.llm?.measured === true) {
+          await sbInsert("scan_cache", { normalized_domain, payload: apiFindings });
+        }
       } catch (e) { console.error("cache write:", (e as Error).message); }
     }
 
